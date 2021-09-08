@@ -6,6 +6,7 @@ from xapi import views
 
 urlpatterns = [
     path('xapi/', views.xapi_list),
+    path('xapi/<int:pk>', views.url_details)
    
 ]
 

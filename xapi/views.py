@@ -20,3 +20,22 @@ def xapi_list(request):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def url_details(request,pk):
+    try: 
+        url = Url.objects.get(pk=pk)
+    except Url.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = XapiSerializer(url)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = XapiSerializer(url, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
