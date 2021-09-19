@@ -11,6 +11,7 @@ class XapiSerializer(serializers.ModelSerializer):
         model = Url
         fields = ['url', 'uuid', 'owner'] 
     owner = serializers.ReadOnlyField(source='owner.username')
+    uuid = serializers.ReadOnlyField()
 
 class UserSerializer(serializers.ModelSerializer):
     urls = serializers.PrimaryKeyRelatedField(many=True, queryset = Url.objects.all() )

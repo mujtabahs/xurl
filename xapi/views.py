@@ -14,6 +14,7 @@ from rest_framework import generics
 from rest_framework import permissions
 
 from xapi.permissions import IsOwnerOrReadOnly
+import uuid
 
 # # @csrf_exempt
 # @api_view(['GET', 'POST'])
@@ -50,9 +51,12 @@ from xapi.permissions import IsOwnerOrReadOnly
 
 class UrlList(generics.ListCreateAPIView):
     queryset = Url.objects.all()
+    print(queryset)
     serializer_class = XapiSerializer
+    
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        uid = str(uuid.uuid4())[:5]
+        serializer.save(owner=self.request.user, uuid=uid)
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
